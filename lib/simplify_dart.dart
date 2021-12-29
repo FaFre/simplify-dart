@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library simplify_dart;
 
-export 'src/simplify_dart_base.dart';
+export 'src/simplify.dart';
 
 // TODO: Export any libraries intended for clients of this package.
