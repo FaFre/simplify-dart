@@ -5,7 +5,7 @@
 import 'dart:math';
 
 // square distance from a point to a segment
-num getSqSegDist(Point p, Point p1, Point p2) {
+num _getSqSegDist(Point p, Point p1, Point p2) {
   var x = p1.x, y = p1.y, dx = p2.x - x, dy = p2.y - y;
 
   if (dx != 0 || dy != 0) {
@@ -47,13 +47,13 @@ List<Point> simplifyRadialDist(List<Point> points, num sqTolerance) {
   return newPoints;
 }
 
-void simplifyDPStep(List<Point> points, int first, int last, num sqTolerance,
+void _simplifyDPStep(List<Point> points, int first, int last, num sqTolerance,
     List<Point> simplified) {
   var maxSqDist = sqTolerance;
   var index = 0;
 
   for (var i = first + 1; i < last; i++) {
-    var sqDist = getSqSegDist(points[i], points[first], points[last]);
+    var sqDist = _getSqSegDist(points[i], points[first], points[last]);
 
     if (sqDist > maxSqDist) {
       index = i;
@@ -63,11 +63,11 @@ void simplifyDPStep(List<Point> points, int first, int last, num sqTolerance,
 
   if (maxSqDist > sqTolerance) {
     if (index - first > 1) {
-      simplifyDPStep(points, first, index, sqTolerance, simplified);
+      _simplifyDPStep(points, first, index, sqTolerance, simplified);
     }
     simplified.add(points[index]);
     if (last - index > 1) {
-      simplifyDPStep(points, index, last, sqTolerance, simplified);
+      _simplifyDPStep(points, index, last, sqTolerance, simplified);
     }
   }
 }
@@ -77,7 +77,7 @@ List<Point> simplifyDouglasPeucker(List<Point> points, num sqTolerance) {
   final last = points.length - 1;
 
   final simplified = [points[0]];
-  simplifyDPStep(points, 0, last, sqTolerance, simplified);
+  _simplifyDPStep(points, 0, last, sqTolerance, simplified);
   simplified.add(points[last]);
 
   return simplified;
